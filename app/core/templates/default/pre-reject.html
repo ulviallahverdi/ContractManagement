@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+     <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Dear {{request.user.first_name}}, please put your rejection note for Initiator.</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label>Rejection Comment</label>
+                                                        <input name= "rejection_comment" type="text" class="form-control" placeholder="Pleasr type here" required>
+                                                </div>
+                                            </div> 
+                                            <a href="/reject/{{contract.contract_id}}"><button type="submit"  class="btn btn-primary mr-2">Reject</button></a>
+                            <a href="/purchase-contract-list"><button type="reset" class="btn btn-danger">Cancel</button></a>
+                                        </form>
+                                    </div>
+                                </div>  
+
+
+                            </div>                            
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+      </div>
+    </div>
+    <!-- Wrapper End-->
+
+
+{% endblock %}

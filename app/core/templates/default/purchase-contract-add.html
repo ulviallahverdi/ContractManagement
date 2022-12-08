@@ -1,0 +1,240 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+     <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Add Purchase Contract</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" data-toggle="validator">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dob">End Date *</label>
+                                        <input type="date" class="form-control" id="dob" name="end_date" />
+                                    </div>
+                                </div>  
+                                <div class="col-md-4">                      
+                                    <div class="form-group">
+                                        <label>Account N#</label>
+                                        <input name= "account_number" type="text" class="form-control" placeholder="Account N#" required>
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>    
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Contract Type</label>
+                                        <select name="contract_type" class="selectpicker form-control" data-style="py-0">
+                                            {% for i in types %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4"> 
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        <select name="department" class="selectpicker form-control" data-style="py-0">
+                                            {% for i in departments %}
+                                            {% for a in request.user.account.allowed_departments %}
+                                            {% if i.id|stringformat:"i" == a %}
+                                            <option value="{{i.id}}">{{i}}</option>
+                                            {% endif %}s
+                                            {% endfor %}
+                                            {% endfor %}
+                                            
+                                        </select>
+                                    </div>
+                                </div> 
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Currency</label>
+                                        <select name="currency" class="selectpicker form-control" data-style="py-0">
+                                        {% for i in currencies %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Base Amount</label>
+                                        <input name="contract_value" type="contract_value" class="form-control" placeholder="Base Amount">
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>TAX</label>
+                                        <input name="percentage" type="percentage" class="form-control" placeholder="TAX %">
+                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Code</label>
+                                        <input name="vendor_code" type="text" class="form-control" placeholder="Vendor Code">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Termination Terms</label>
+                                        <select name="termination_terms" class="selectpicker form-control" data-style="py-0">
+                                        {% for i in termination_terms %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Payment Terms</label>
+                                        <select name="payment_terms" class="selectpicker form-control" data-style="py-0">
+                                        {% for i in payment_terms %}
+                                            <option value="{{i.id}}">{{i.name}}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Email</label>
+                                        <input name="vendor_email" type="text" class="form-control" placeholder="Vendor Email">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Phone</label>
+                                        <input name="vendor_phone" type="text" class="form-control" placeholder="Vendor Phone">
+                                        <div class="help-block with-errors"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Description *</label>
+                                        <div id="quill-tool">
+                                            <input name="description" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Name *</label>
+                                        <div id="quill-tool">
+                                            <input name="vendor_name" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Director *</label>
+                                        <div id="quill-tool">
+                                            <input name="vendor_director" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor VOEN *</label>
+                                        <div id="quill-tool">
+                                            <input name="vendor_voen" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Vendor Address *</label>
+                                        <div id="quill-tool">
+                                            <input name="vendor_address" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank Name *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_name" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank VOEN *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_voen" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank Code *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_code" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank SWIFT *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_swift" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank Müxbir Hesabı *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_m_h" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Bank Hesablaşma Hesabı *</label>
+                                        <div id="quill-tool">
+                                            <input name="bank_h_h" type="text" class="form-control" placeholder="Decription" required>
+                                        </div>
+                                    </div>
+                                </div> 
+
+
+
+
+                            </div>                            
+                            <button type="submit" class="btn btn-primary mr-2">Add Purchase</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+      </div>
+    </div>
+    <!-- Wrapper End-->
+
+
+{% endblock %}

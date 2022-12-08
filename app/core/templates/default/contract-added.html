@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+     <div class="container-fluid add-form-list">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">Contract {{contract_id}} is created successfully by {{request.user.username}}</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dob">Contract ID:   {{contract_id}}</label>
+                                        
+                                    </div>
+                                </div>  
+
+
+                            </div>                            
+                            <a href="/approve/{{contract_id}}"><button type="submit"  class="btn btn-primary mr-2">I Approve</button></a>
+                            <button type="reset" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+      </div>
+    </div>
+    <!-- Wrapper End-->
+
+
+{% endblock %}

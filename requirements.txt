@@ -1,0 +1,5 @@
+Django>=3.2.4,<3.3
+sqlalchemy>=1.4.44,<2
+django-multiselectfield
+psycopg2>=2.8.6,<2.9
+docx-mailmerge

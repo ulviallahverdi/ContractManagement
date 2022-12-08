@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+            <div>
+                <h4 class="mb-3">Contract List</h4>
+                <p class="mb-0">A contract dashboard enables purchasing manager to efficiently track, evaluate, <br>
+                and optimize all contract initiating processes within a company.</p>
+            </div>
+            <a href="purchase-contract-add" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Create Purchase Contract</a>
+        </div>
+    </div>
+    <div class="col-lg-12">
+        <div class="table-responsive rounded mb-3">
+        <table class="data-table table mb-0 tbl-server-info">
+            <thead class="bg-white text-uppercase">
+                <tr class="ligth ligth-data">
+                    <th>
+                        <div class="checkbox d-inline-block">
+                            <input type="checkbox" class="checkbox-input" id="checkbox1">
+                            <label for="checkbox1" class="mb-0"></label>
+                        </div>
+                    </th>
+                    <th>Date</th>
+                    <th>Contract No</th>
+                    <th>Vendor Code</th>
+                    <th>Contract Status</th>
+                    <th>Contract Value</th>
+                    <th>Acct#</th>
+                    <th>Payment Terms</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="ligth-body">
+                {% for acc in account %}
+                {% for contract in all_contracts %}
+               {% if acc == contract.department.id %}
+                <tr>
+                    <td>
+                        <div class="checkbox d-inline-block">
+                            <input type="checkbox" class="checkbox-input" id="checkbox2">
+                            <label for="checkbox2" class="mb-0"></label>
+                        </div>
+                    </td>
+                    
+                    <td>{{contract.start_date}}</td>
+                    <td>{{contract.contract_id}}</td>
+                    <td>{{contract.vendor_code}}</td>
+                    <td><div class="badge badge-success">{{contract.status}}</div></td>
+                    <td>{{contract.contract_value}}</td>
+                    <td>{{contract.account_number}}</td>
+                    <td>{{contract.payment_terms}}</td>                            
+                    <td> {% if contract.approval_status == 0 %}<div class="badge badge-warning">Created</div>{% endif %}
+                         {% if contract.approval_status == 1 %}<div class="badge badge-primary">Approved by Initiator</div>{% endif %}
+                         {% if contract.approval_status == 2 %}<div class="badge badge-primary">Approved by Purchasing</div>{% endif %}
+                         {% if contract.approval_status == 3 %}<div class="badge badge-danger">Approved by Acc.Control</div>{% endif %}
+                         {% if contract.approval_status == 4 %}<div class="badge badge-dark">Approved by FC</div>{% endif %}
+                         {% if contract.approval_status == 5 %}<div class="badge badge-success">Approved by GM</div>{% endif %}
+                        </td>
+                    <td>
+                        <div class="d-flex align-items-center list-action">
+                            
+                            
+                            {% if contract.user == request.user and contract.creator_edit %}
+                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                href="edit/{{contract.contract_id}}"><i class="ri-pencil-line mr-0"></i></a>
+                            {% endif %}
+                            {% if contract.approval_status == 0 and contract.user == request.user and contract.creator_edit %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Approve"
+                                href="approve/{{contract.contract_id}}"><i class="ri-eye-line mr-0"></i></a>
+                            
+                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
+                                href="delete/{{contract.contract_id}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            {% elif contract.approval_status == 1 and request.user.account.purchasing_rights %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Approve"
+                                href="approve/{{contract.contract_id}}"><i class="ri-eye-line mr-0"></i></a>
+                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                href="edit/{{contract.contract_id}}"><i class="ri-pencil-line mr-0"></i></a>
+                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reject"
+                                href="reject/{{contract.contract_id}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            {% elif contract.approval_status == 2 and request.user.account.account_control %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Approve"
+                                href="approve/{{contract.contract_id}}"><i class="ri-eye-line mr-0"></i></a>
+                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reject"
+                                href="approve/{{contract.id}}"><i class="ri-pencil-line mr-0"></i></a>
+                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Comment"
+                                href="approve/{{contract.id}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            {% elif contract.approval_status == 3 and request.user.account.dof_rights %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Approve"
+                                href="approve/{{contract.contract_id}}"><i class="ri-eye-line mr-0"></i></a>
+                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reject"
+                                href="approve/{{contract.id}}"><i class="ri-pencil-line mr-0"></i></a>
+                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Comment"
+                                href="approve/{{contract.id}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            {% elif contract.approval_status == 4 and request.user.account.gm_rights  %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Approve"
+                                href="approve/{{contract.contract_id}}"><i class="ri-eye-line mr-0"></i></a>
+                            <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reject"
+                                href="approve/{{contract.id}}"><i class="ri-pencil-line mr-0"></i></a>
+                            <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                href="edit/{{contract.contract_id}}"><i class="ri-delete-bin-line mr-0"></i></a>
+                            {% elif contract.approval_status == 5 %}
+                            <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View Contract"
+                                href="{{contract.contract_exported_link}}"><i class="ri-eye-line mr-0"></i></a>
+                           
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+           {% endif %}
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
